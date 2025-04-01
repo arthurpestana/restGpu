@@ -1,4 +1,5 @@
 package dto;
+import model.Manufacturer;
 import model.TypeGpu;
 import model.Gpu;
 
@@ -8,7 +9,9 @@ public record GpuResponseDTO(
     String fabricante,
     Integer memoriaVRAM,
     TypeGpu tipo,
-    String arquitetura) {
+    String arquitetura,
+    Manufacturer manufacturer
+) {
 
     public static GpuResponseDTO valueOf(Gpu gpu) {
         if (gpu == null)
@@ -19,7 +22,8 @@ public record GpuResponseDTO(
             gpu.getFabricante(),
             gpu.getMemoriaVRAM(),
             gpu.getTipo(),
-            gpu.getArquitetura()
+            gpu.getArquitetura(),
+            gpu.getManufacturer()
         );
     }
 }

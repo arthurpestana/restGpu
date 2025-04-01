@@ -6,5 +6,6 @@ public record GpuDTO(
     String fabricante,
     Integer memoriaVRAM,
     TypeGpu tipo,
-    String arquitetura
+    String arquitetura,
+    long idManufacturer
 ) {}

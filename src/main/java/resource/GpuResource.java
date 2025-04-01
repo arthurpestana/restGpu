@@ -2,6 +2,7 @@ package resource;
 
 import dto.GpuDTO;
 import dto.GpuResponseDTO;
+import dto.ManufacturerResponseDTO;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
@@ -24,8 +25,14 @@ public class GpuResource {
 
     @GET
     @Path("/nome/{nome}")
-    public GpuResponseDTO findByNameGpu(String nome) {
+    public List<GpuResponseDTO> findByNameGpu(String nome) {
         return service.findByName(nome);
+    }
+
+    @GET
+    @Path("/fabricante/{id}")
+    public List<GpuResponseDTO>  buscarPorFabricante(long id) {
+        return service.findByManufacturer(id);
     }
 
     @POST

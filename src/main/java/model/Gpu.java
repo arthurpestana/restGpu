@@ -1,9 +1,6 @@
 package model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
 
 @Entity
 public class Gpu extends DefaultEntity {
@@ -22,6 +19,18 @@ public class Gpu extends DefaultEntity {
 
     @Column(length = 50, nullable = false)
     private String arquitetura;
+
+    @ManyToOne
+    @JoinColumn(name = "id_manufacturer")
+    private Manufacturer manufacturer;
+
+    public Manufacturer getManufacturer() {
+        return manufacturer;
+    }
+
+    public void setManufacturer(Manufacturer manufacturer) {
+        this.manufacturer = manufacturer;
+    }
 
     public String getNome() {
         return nome;

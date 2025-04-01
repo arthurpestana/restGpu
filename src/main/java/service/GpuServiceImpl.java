@@ -56,9 +56,10 @@ public class GpuServiceImpl implements GpuService {
     }
 
     @Override
-    public GpuResponseDTO findByName(String name) {
-        Gpu gpu = gpuRepository.findByName(name);
-        return GpuResponseDTO.valueOf(gpu);
+    public List<GpuResponseDTO> findByName(String name) {
+        return gpuRepository.findByName(name).stream()
+                .map(GpuResponseDTO::valueOf)
+                .toList();
     }
 
     @Override
@@ -66,5 +67,11 @@ public class GpuServiceImpl implements GpuService {
         return gpuRepository.findAll().stream()
             .map(GpuResponseDTO::valueOf)
             .toList();
+    }
+
+    @Override
+    public List<GpuResponseDTO> findByManufacturer(long idManufacturer) {
+        return gpuRepository.findByManufacturer(idManufacturer)
+                .stream().map(e -> GpuResponseDTO.valueOf(e)).toList();
     }
 }

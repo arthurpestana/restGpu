@@ -8,6 +8,7 @@ public interface GpuService {
     void updateGpu(long id, GpuDTO gpu);
     void deleteGpu(long id);
     GpuResponseDTO findById(long id);
-    GpuResponseDTO findByName(String name);
+    List<GpuResponseDTO> findByName(String name);
     List<GpuResponseDTO> findAll();
+    List<GpuResponseDTO> findByManufacturer(long idManufacturer);
 }
