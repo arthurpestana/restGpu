@@ -1,14 +1,15 @@
 package service;
-import dto.GpuDTO;
-import dto.GpuResponseDTO;
 import java.util.List;
 
+import dto.GpuDTO;
+import dto.GpuResponseDTO;
+
 public interface GpuService {
-    GpuResponseDTO createGpu(GpuDTO gpu);
-    void updateGpu(long id, GpuDTO gpu);
-    void deleteGpu(long id);
+    GpuResponseDTO create(GpuDTO gpu);
+    void update(long id, GpuDTO gpu);
+    void delete(long id);
     GpuResponseDTO findById(long id);
-    List<GpuResponseDTO> findByName(String name);
+    List<GpuResponseDTO> findByNome(String nome);
     List<GpuResponseDTO> findAll();
-    List<GpuResponseDTO> findByManufacturer(long idManufacturer);
+    List<GpuResponseDTO> findByFabricante(long idFabricante);
 }

@@ -1,16 +1,15 @@
 package dto;
-import model.Manufacturer;
+import model.Fabricante;
 import model.TypeGpu;
 import model.Gpu;
 
 public record GpuResponseDTO(
     Long id,
     String nome,
-    String fabricante,
     Integer memoriaVRAM,
     TypeGpu tipo,
     String arquitetura,
-    Manufacturer manufacturer
+    Fabricante fabricante
 ) {
 
     public static GpuResponseDTO valueOf(Gpu gpu) {
@@ -19,11 +18,10 @@ public record GpuResponseDTO(
         return new GpuResponseDTO(
             gpu.getId(),
             gpu.getNome(),
-            gpu.getFabricante(),
             gpu.getMemoriaVRAM(),
             gpu.getTipo(),
             gpu.getArquitetura(),
-            gpu.getManufacturer()
+            gpu.getFabricante()
         );
     }
 }

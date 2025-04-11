@@ -10,21 +10,26 @@ import repository.GpuRepository;
 
 import java.util.List;
 
+import repository.FabricanteRepository;
+
 @ApplicationScoped
 public class GpuServiceImpl implements GpuService {
 
     @Inject
     GpuRepository gpuRepository;
 
+    @Inject
+    FabricanteRepository fabricanteRepository;
+
     @Override
     @Transactional
-    public GpuResponseDTO createGpu(GpuDTO gpu) {
+    public GpuResponseDTO create(GpuDTO gpu) {
         Gpu novaGpu = new Gpu();
         novaGpu.setNome(gpu.nome());
-        novaGpu.setFabricante(gpu.fabricante());
         novaGpu.setMemoriaVRAM(gpu.memoriaVRAM());
         novaGpu.setTipo(gpu.tipo());
         novaGpu.setArquitetura(gpu.arquitetura());
+        novaGpu.setFabricante(fabricanteRepository.findById(gpu.idFabricante()));
 
         gpuRepository.persist(novaGpu);
 
@@ -33,11 +38,11 @@ public class GpuServiceImpl implements GpuService {
 
     @Override
     @Transactional
-    public void updateGpu(long id, GpuDTO gpu) {
+    public void update(long id, GpuDTO gpu) {
         Gpu gpuExistente = gpuRepository.findById(id);
 
         gpuExistente.setNome(gpu.nome());
-        gpuExistente.setFabricante(gpu.fabricante());
+        gpuExistente.setFabricante(fabricanteRepository.findById(gpu.idFabricante()));
         gpuExistente.setMemoriaVRAM(gpu.memoriaVRAM());
         gpuExistente.setTipo(gpu.tipo());
         gpuExistente.setArquitetura(gpu.arquitetura());
@@ -45,7 +50,7 @@ public class GpuServiceImpl implements GpuService {
 
     @Override
     @Transactional
-    public void deleteGpu(long id) {
+    public void delete(long id) {
         gpuRepository.deleteById(id);
     }
 
@@ -56,8 +61,8 @@ public class GpuServiceImpl implements GpuService {
     }
 
     @Override
-    public List<GpuResponseDTO> findByName(String name) {
-        return gpuRepository.findByName(name).stream()
+    public List<GpuResponseDTO> findByNome(String nome) {
+        return gpuRepository.findByNome(nome).stream()
                 .map(GpuResponseDTO::valueOf)
                 .toList();
     }
@@ -70,8 +75,8 @@ public class GpuServiceImpl implements GpuService {
     }
 
     @Override
-    public List<GpuResponseDTO> findByManufacturer(long idManufacturer) {
-        return gpuRepository.findByManufacturer(idManufacturer)
+    public List<GpuResponseDTO> findByFabricante(long idFabricante) {
+        return gpuRepository.findByFabricante(idFabricante)
                 .stream().map(e -> GpuResponseDTO.valueOf(e)).toList();
     }
 }

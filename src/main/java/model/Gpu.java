@@ -8,9 +8,6 @@ public class Gpu extends DefaultEntity {
     @Column(length = 100, nullable = false)
     private String nome;
 
-    @Column(length = 50, nullable = false)
-    private String fabricante;
-
     @Column(nullable = false)
     private int memoriaVRAM;
 
@@ -21,15 +18,15 @@ public class Gpu extends DefaultEntity {
     private String arquitetura;
 
     @ManyToOne
-    @JoinColumn(name = "id_manufacturer")
-    private Manufacturer manufacturer;
+    @JoinColumn(name = "id_fabricante")
+    private Fabricante fabricante;
 
-    public Manufacturer getManufacturer() {
-        return manufacturer;
+    public Fabricante getFabricante() {
+        return fabricante;
     }
 
-    public void setManufacturer(Manufacturer manufacturer) {
-        this.manufacturer = manufacturer;
+    public void setFabricante(Fabricante fabricante) {
+        this.fabricante = fabricante;
     }
 
     public String getNome() {
@@ -38,14 +35,6 @@ public class Gpu extends DefaultEntity {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public String getFabricante() {
-        return fabricante;
-    }
-
-    public void setFabricante(String fabricante) {
-        this.fabricante = fabricante;
     }
 
     public int getMemoriaVRAM() {

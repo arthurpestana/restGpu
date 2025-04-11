@@ -1,0 +1,167 @@
+@startuml
+
+' ENTIDADE BASE
+abstract class DefaultEntity {
+    - id: long
+    + getId(): long
+    + setId(long id)
+}
+
+' ENUM TYPE
+enum Type {
+    ENTRY_LEVEL(1, "Entrada")
+    MID_RANGE(2, "Intermediária")
+    HIGH_END(3, "Topo de Linha")
+    WORKSTATION(4, "Workstation")
+    AI_ACCELERATOR(5, "Acelerador de IA")
+
+    - id: int
+    - nome: String
+
+    + getId(): int
+    + getNome(): String
+    + valueOf(Integer id): Type
+}
+
+' MANUFACTURER
+class Fabricante {
+    - nome: String
+    - pais: String
+
+    + getNome(): String
+    + setNome(String nome)
+    + getPais(): String
+    + setPais(String pais)
+}
+
+Fabricante --|> DefaultEntity
+
+' GPU
+class Gpu {
+    - nome: String
+    - fabricante: String
+    - memoriaVRAM: int
+    - tipo: Type
+    - arquitetura: String
+    - fabricante: Fabricante
+
+    + getNome(): String
+    + setNome(String nome)
+    + getFabricante(): String
+    + setFabricante(String fabricante)
+    + getMemoriaVRAM(): int
+    + setMemoriaVRAM(int vram)
+    + getTipo(): Type
+    + setTipo(Type tipo)
+    + getArquitetura(): String
+    + setArquitetura(String arquitetura)
+    + getFabricante(): Fabricante
+    + setFabricante(Fabricante m)
+}
+
+Gpu --|> DefaultEntity
+Gpu --> Fabricante
+Gpu --> Type
+Fabricante "1" <-- "0..*" Gpu : pertence a
+
+' GPU DTO
+class GpuDTO {
+    + String nome
+    + String fabricante
+    + Integer memoriaVRAM
+    + Type tipo
+    + String arquitetura
+    + long idFabricante
+}
+
+GpuDTO --> Type
+
+class GpuResponseDTO {
+    + Long id
+    + String nome
+    + String fabricante
+    + int memoriaVRAM
+    + Type tipo
+    + String arquitetura
+    + Fabricante fabricante
+    + static GpuResponseDTO valueOf(Gpu gpu)
+    + static List<GpuResponseDTO> listOf(List<Gpu> gpus)
+}
+
+GpuResponseDTO --> Fabricante
+GpuResponseDTO --> Type
+GpuResponseDTO ..> Gpu : "Criação a partir de"
+
+' MANUFACTURER DTO
+class FabricanteDTO {
+    + String nome
+    + String pais
+}
+
+class FabricanteResponseDTO {
+    + Long id
+    + String nome
+    + String pais
+    + static FabricanteResponseDTO valueOf(Fabricante m)
+    + static List<FabricanteResponseDTO> listOf(List<Fabricante> list)
+}
+
+FabricanteResponseDTO ..> Fabricante : "Criação a partir de"
+
+' REPOSITORIES
+class GpuRepository {
+    + findByNome(String nome): List<Gpu>
+    + findByFabricante(Long idFabricante): List<Gpu>
+}
+class FabricanteRepository {
+    + findByNome(String nome): List<Fabricante>
+}
+
+GpuRepository --> Gpu
+FabricanteRepository --> Fabricante
+
+' SERVICES
+interface GpuService {
+    + create(GpuDTO dto): GpuResponseDTO
+    + update(Long id, GpuDTO dto)
+    + delete(Long id)
+    + findById(Long id): GpuResponseDTO
+    + findAll(): List<GpuResponseDTO>
+    + findByFabricante(Long idFabricante): List<GpuResponseDTO>
+}
+interface FabricanteService {
+    + create(FabricanteDTO dto): FabricanteResponseDTO
+    + update(Long id, FabricanteDTO dto)
+    + delete(Long id)
+    + findById(Long id): FabricanteResponseDTO
+    + findAll(): List<FabricanteResponseDTO>
+}
+
+GpuService --> GpuDTO
+GpuService --> GpuResponseDTO
+FabricanteService --> FabricanteDTO
+FabricanteService --> FabricanteResponseDTO
+
+' RESOURCE (API CONTROLLERS)
+class GpuResource {
+    + POST create(GpuDTO)
+    + PUT update(id, GpuDTO)
+    + DELETE delete(id)
+    + GET findById(id)
+    + GET findAll()
+    + GET findByNome(nome)
+    + GET findByFabricante(id)
+}
+class FabricanteResource {
+    + POST create(FabricanteDTO)
+    + PUT update(id, FabricanteDTO)
+    + DELETE delete(id)
+    + GET findById(id)
+    + GET findAll()
+    + GET findByNome(nome)
+}
+
+GpuResource --> GpuService
+FabricanteResource --> FabricanteService
+
+@enduml
